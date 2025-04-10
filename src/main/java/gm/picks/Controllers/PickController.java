@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import gm.picks.Models.*;
 import gm.picks.Service.PickService;
 import gm.picks.Service.UsuarioService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +17,6 @@ import java.util.List;
 
 @Controller
 public class PickController {
-    private static final Logger logger = LoggerFactory.getLogger(PickController.class);
     private GenericResponse response = new GenericResponse();
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -57,10 +54,9 @@ public class PickController {
     public GenericResponse registrarPick(@RequestBody String pickModel) throws JsonProcessingException {
         try {
             Pick pick = objectMapper.readValue(pickModel, Pick.class);
-            logger.info("Pick: " + pick.toString());
             pickService.registrarPick(pick);
             if (!pick.getResultado().equals("Pendiente") && !pick.getResultado().equals("Nulo")) {
-                updateSaldo(pick);
+                usuarioService.updateSaldo(pick);
             }
             response.Estado = true;
 
@@ -75,16 +71,5 @@ public class PickController {
     @ResponseBody
     public List<Pick> loadPicks(){
         return pickService.listPicks();
-    }
-
-    public void updateSaldo(Pick pick){
-        Usuario usuario = usuarioService.findUsuario("iAndresT");
-        if(pick.getResultado().equals("Acierto")){
-            usuario.setSaldoActual(usuario.getSaldoActual() + pick.getUtilidadPick());
-        }
-        else if (pick.getResultado().equals("Perdido")) {
-            usuario.setSaldoActual(usuario.getSaldoActual() - pick.getValor());
-        }
-        usuarioService.addUsuario(usuario);
     }
 }
