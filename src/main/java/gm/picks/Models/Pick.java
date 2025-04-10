@@ -41,5 +41,7 @@ public class Pick {
     String resultado;
     Double pagoPick;
     Double utilidadPick;
-
+    @ManyToOne
+    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
+    Usuario usuario;
 }
