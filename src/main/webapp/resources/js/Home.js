@@ -21,6 +21,10 @@ const MODELO_BASE = {
     valor: "",
     cuota: "",
     resultado: "Pendiente",
+    usuario: {
+        id: null,
+        userName: "",
+    }
 };
 
 const meses = [
@@ -335,6 +339,7 @@ $("#btnGuardarPick").click(function () {
         modelo["pagoPick"] = modelo["valor"];
         modelo["utilidadPick"] = 0;
     }
+    modelo["usuario"]["id"] = parseInt($("#userId").text(), 10);
 
     $("#modalData").find("div.modal-content").LoadingOverlay("show");
 
@@ -353,6 +358,7 @@ $("#btnGuardarPick").click(function () {
             if (responseJson.Estado) {
                 $("#modalData").modal("hide");
                 getGrid();
+                actualizarSaldo();
                 swal("Pick registrado", "", "success");
             }
             else {
@@ -365,6 +371,22 @@ $("#btnGuardarPick").click(function () {
         });
 
 });
+
+async function actualizarSaldo() {
+    fetch('/picks/getSaldoActual')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener el saldo actual.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            $('#saldoActual').text(new Intl.NumberFormat('en-CO', { style: 'currency', currency: 'USD' }).format(data));
+        })
+        .catch(error => {
+            console.error(error.message);
+        });
+}
 
 $('#gridPicks').on('click', '.editar-pick', async function () {
     const rowNode = grid.getRowNode($(this).closest('div.ag-row').attr('row-id'));
