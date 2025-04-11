@@ -1,6 +1,5 @@
 package gm.picks.Service;
 
-import gm.picks.Models.Pick;
 import gm.picks.Models.Usuario;
 
 public interface IUsuarioService {
@@ -9,7 +8,9 @@ public interface IUsuarioService {
 
     public boolean validateLogin(Usuario usuario);
 
-    public void updateSaldo(Pick pick);
+    public void updateSaldo(int idUser);
+
+    public Object[] getRendimientos(int userId, Integer sportId, String mes);
 
     public void addUsuario(Usuario usuario);
 }
