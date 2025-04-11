@@ -6,10 +6,17 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-12">
                 <button class="btn btn-warning" id="btnNuevoPickNBA"><i class="fas fa-plus-circle"></i> Registrar NBA</button>
                 <button class="btn btn-primary" id="btnNuevoPickMLB"><i class="fas fa-plus-circle"></i> Registrar MLB</button>
                 <button class="btn btn-success" id="btnNuevoPickFutbol"><i class="fas fa-plus-circle"></i> Registrar Futbol</button>
+                
+                <label class="pl-2" for="cboTipoFiltro">Filtrar por:</label>
+                <select class="form-control col-sm-1" name="tipoFiltro" id="cboTipoFiltro" style="display: inline;">
+                    <option value="1">Deporte</option>
+                    <option value="2">Mes</option>
+                    <option value="3">Ambas</option>
+                </select>
             </div>
         </div>
         <hr />
