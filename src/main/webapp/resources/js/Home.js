@@ -86,7 +86,8 @@ async function getGrid() {
             },
             {
                 headerName: 'Casa',
-                field: 'casino.name'
+                field: 'casino.name',
+                filter: true
             },
             {
                 field: 'resultado'
@@ -121,17 +122,22 @@ async function getGrid() {
                     }
                 }
             },
-            { headerName: 'Equipo Local', field: 'equipoLocal', cellStyle: { 'text-align': 'center' } },
-
+            {
+                headerName: 'Equipo Local',
+                field: 'equipoLocal',
+                cellStyle: { 'text-align': 'center' },
+                filter: true
+            },
             {
                 field: 'equipoVisitante',
-                cellStyle: { 'text-align': 'center' }
+                cellStyle: { 'text-align': 'center' },
+                filter: true
             },
             {
                 headerName: 'Descripción',
                 field: 'descripcion'
             },
-            { field: 'jugador' },
+            { field: 'jugador', filter: true },
             { headerName: 'Estrategia', field: 'linea' },
             {
                 field: 'unidades'
