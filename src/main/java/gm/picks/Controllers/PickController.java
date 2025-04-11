@@ -55,11 +55,8 @@ public class PickController {
         try {
             Pick pick = objectMapper.readValue(pickModel, Pick.class);
             pickService.registrarPick(pick);
-            if (!pick.getResultado().equals("Pendiente") && !pick.getResultado().equals("Nulo")) {
-                usuarioService.updateSaldo(pick);
-            }
+            usuarioService.updateSaldo(pick.getUsuario().getId());
             response.Estado = true;
-
         } catch (Exception e) {
             response.Estado = false;
             response.Mensaje = e.getMessage();
