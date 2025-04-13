@@ -1,3 +1,4 @@
+//API Equipos Futbol https://www.sofascore.com/api/v1/sport/football/2025-04-12/-18000/categories
 const MODELO_BASE = {
     id: null,
     fecha: "",
@@ -146,10 +147,11 @@ async function getGrid() {
                 field: 'probabilidad'
             },
             { field: 'riesgo' },
-            { field: 'mes' },
+            { field: 'mes', filter: true },
             {
                 headerName: 'Deporte',
-                field: 'sport.name'
+                field: 'sport.name',
+                filter: true
             },
             {
                 headerName: 'País',
@@ -193,8 +195,12 @@ async function loadSelects () {
         .then((responseJson) => {
             if (responseJson.length > 0) {
                 $("#cboSport").empty();
+                $("#cboFiltroDeporte").empty();
                 responseJson.forEach((sport) => {
                     $("#cboSport").append(
+                        $("<option>").val(sport.id).text(sport.name)
+                    );
+                    $("#cboFiltroDeporte").append(
                         $("<option>").val(sport.id).text(sport.name)
                     );
                 });
@@ -228,7 +234,7 @@ async function loadSelects () {
 
 function mostrarModal(modelo = MODELO_BASE) {
     $("#txtId").val(modelo.id);
-    $("#txtFecha").val(new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0]);
+    $("#txtFecha").val(modelo.fecha == '' ? new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] : modelo.fecha);
     $("#cboCasino").val(modelo.casino.id);
     $("#cboLinea").val(modelo.linea);
     $("#cboSport").val(modelo.sport.id);
@@ -409,4 +415,60 @@ $('#gridPicks').on('click', '.editar-pick', async function () {
         await loadDescripcion(3);
     }
     mostrarModal(rowNode.data);
+});
+
+$('#cboTipoFiltro').change(function () {
+    const filtro = $(this).val();
+    if (filtro == 1) {
+        $('#cboFiltroDeporte').show();
+        $('#cboFiltroMes').hide();
+    }
+    else if (filtro == 2) {
+        $('#cboFiltroDeporte').hide();
+        $('#cboFiltroMes').show();
+    }
+    else if (filtro == 3) {
+        $('#cboFiltroDeporte').show();
+        $('#cboFiltroMes').show();
+    }
+    else {
+        $('#cboFiltroDeporte').hide();
+        $('#cboFiltroMes').hide();
+    }
+});
+
+$('#btnLimpiarFiltro').click(function () {
+    grid.setFilterModel(null);
+    $('#cboTipoFiltro').val(0);
+    
+});
+
+$('#btnFiltrar').click(function () {
+    const filtro = $("#cboTipoFiltro").val();
+    const filtroDeporte = $("#cboFiltroDeporte option:selected").text();
+    let filtroMes = $("#cboFiltroMes").val();
+
+    if (filtro == 1) {      
+        grid.setFilterModel({
+            'sport.name': { filter: filtroDeporte, type: 'equals' },
+        });
+    }
+    else if (filtro == 2) {
+        filtroMes = $("#cboFiltroMes option:selected").text();
+        grid.setFilterModel({
+            'mes': { filter: filtroMes, type: 'equals' },
+        });
+    }
+    else if (filtro == 3) {
+        if (filtroMes != 0) {
+            filtroMes = $("#cboFiltroMes option:selected").text();
+            grid.setFilterModel({
+                'sport.name': { filter: filtroDeporte, type: 'equals' },
+                'mes': { filter: filtroMes, type: 'equals' },
+            });
+        }
+        else {
+            toastr.warning("", "Seleccione un mes para filtrar");
+        }
+    }       
 });
