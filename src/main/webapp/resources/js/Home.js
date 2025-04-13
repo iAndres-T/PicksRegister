@@ -37,6 +37,7 @@ let grid;
 
 $(document).ready(function () { 
     loadSelects();
+    $("#cboTipoFiltro").val(0).change();
     getGrid();
 });
 
@@ -439,8 +440,9 @@ $('#cboTipoFiltro').change(function () {
 
 $('#btnLimpiarFiltro').click(function () {
     grid.setFilterModel(null);
-    $('#cboTipoFiltro').val(0);
-    
+    $('#cboTipoFiltro').val(0).change();
+    $('#cboFiltroDeporte').val(1);
+    $('#cboFiltroMes').val(0);
 });
 
 $('#btnFiltrar').click(function () {
