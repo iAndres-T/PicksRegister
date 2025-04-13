@@ -13,10 +13,35 @@
                 
                 <label class="pl-2" for="cboTipoFiltro">Filtrar por:</label>
                 <select class="form-control col-sm-1" name="tipoFiltro" id="cboTipoFiltro" style="display: inline;">
+                    <option value="0">Seleccione</option>
                     <option value="1">Deporte</option>
                     <option value="2">Mes</option>
-                    <option value="3">Ambas</option>
+                    <option value="3">Deporte y Mes</option>
                 </select>
+
+                <label class="pl-2" for="cboFiltroDeporte"></label>
+                <select class="form-control col-sm-1" name="filtroDeporte" id="cboFiltroDeporte" style="display: inline;">
+                </select>
+
+                <label class="pl-2" for="cboFiltroMes"></label>
+                <select class="form-control col-sm-1" name="filtroMes" id="cboFiltroMes" style="display: inline;">
+                    <option value="0">Seleccione</option>
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+
+                <button class="btn btn-secondary" id="btnFiltrar" style="display: inline;"><i class="fas fa-filter"></i></button>
+                <button class="btn btn-secondary" id="btnLimpiarFiltro" style="display: inline;"><i class="fas fa-eraser"></i></button>
             </div>
         </div>
         <hr />
