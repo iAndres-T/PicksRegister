@@ -40,6 +40,7 @@ $(document).ready(async function () {
     $("#cboTipoFiltro").val(0).change();
     await getGrid();
     getCuotaPromedio();
+    getGananciaAndRentabilidad();
 });
 
 async function getGrid() {
@@ -373,6 +374,7 @@ $("#btnGuardarPick").click(function () {
                 $("#modalData").modal("hide");
                 getGrid();
                 actualizarSaldo();
+                getCuotaPromedio();
                 swal("Pick registrado", "", "success");
             }
             else {
@@ -487,3 +489,16 @@ function getCuotaPromedio() {
     });
     $("#txtCuotaPromedio").text(totalPicks > 0 ? 'Cuota: '+(totalCuota / totalPicks).toFixed(2) : 'Cuota: ' + 0);
 }
+
+function getGananciaAndRentabilidad() {
+    let totalGanancia = 0;
+    grid.forEachNode((node) => {
+        if (node.data.utilidadPick) {
+            totalGanancia += parseFloat(node.data.utilidadPick);
+        }
+    });
+    $("#txtGanancia").text('Ganancia: ' + totalGanancia.toFixed(2));
+    $("#txtRentabilidad").text('Rentabilidad: ' + (totalGanancia / $("#txtSaldoInicial").text() * 100).toFixed(0) + '%');
+}
+
+
