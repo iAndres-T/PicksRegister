@@ -35,10 +35,11 @@ const meses = [
 
 let grid;
 
-$(document).ready(function () { 
+$(document).ready(async function () { 
     loadSelects();
     $("#cboTipoFiltro").val(0).change();
-    getGrid();
+    await getGrid();
+    getCuotaPromedio();
 });
 
 async function getGrid() {
@@ -474,3 +475,15 @@ $('#btnFiltrar').click(function () {
         }
     }       
 });
+
+function getCuotaPromedio() {
+    let totalCuota = 0;
+    let totalPicks = 0;
+    grid.forEachNode((node) => {
+        if (node.data.cuota) {
+            totalCuota += parseFloat(node.data.cuota);
+            totalPicks++;
+        }
+    });
+    $("#txtCuotaPromedio").text(totalPicks > 0 ? 'Cuota: '+(totalCuota / totalPicks).toFixed(2) : 'Cuota: ' + 0);
+}
