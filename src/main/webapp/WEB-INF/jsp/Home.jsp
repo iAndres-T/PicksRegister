@@ -44,8 +44,8 @@
                 <button class="btn btn-secondary" id="btnLimpiarFiltro" style="display: inline;"><i class="fas fa-eraser"></i></button>
 
                 <span id="txtCuotaPromedio"></span>
-                <span id="txtGanancia">Ganancia: </span>
-                <span id="txtRentabilidad">Rentabilidad: </span>
+                <span id="txtGanancia"></span>
+                <span id="txtRentabilidad"></span>
             </div>
         </div>
         <hr />
