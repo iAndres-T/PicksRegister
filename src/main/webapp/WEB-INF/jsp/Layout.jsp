@@ -83,12 +83,28 @@
 
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="saldoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Bank: </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Bank Actual: </span>
                                 <span id="saldoActual" class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <fmt:setLocale value="en_CO"/>
-                                    <fmt:formatNumber type="currency" value="${Usuario.saldoActual}"/>
+                                    <fmt:formatNumber type="currency" value="${Usuario.saldoActual}" maxFractionDigits="0" minFractionDigits="0"/>
                                 </span>
                             </a>
+                            <!-- Dropdown - Bank Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="saldoDropdown">
+                                <span>Bank Inicial: </span>
+                                <span id="txtSaldoInicial">
+                                    <fmt:setLocale value="en_CO"/>
+                                    <fmt:formatNumber type="currency" value="${Usuario.saldoInicial}" maxFractionDigits="0" minFractionDigits="0"/>
+                                </span>
+                                <a class="dropdown-item" href="#" id="btnRecargarSaldo">
+                                    <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Recargar Saldo
+                                </a>
+                                <a class="dropdown-item" href="#" id="btnRetirarSaldo">
+                                    <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Retirar Saldo
+                                </a>
+                            </div>
                         </li>
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <!-- Nav Item - User Information -->
