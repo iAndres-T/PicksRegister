@@ -42,6 +42,10 @@
 
                 <button class="btn btn-secondary" id="btnFiltrar" style="display: inline;"><i class="fas fa-filter"></i></button>
                 <button class="btn btn-secondary" id="btnLimpiarFiltro" style="display: inline;"><i class="fas fa-eraser"></i></button>
+
+                <span id="txtCuotaPromedio"></span>
+                <span id="txtGanancia">Ganancia: </span>
+                <span id="txtRentabilidad">Rentabilidad: </span>
             </div>
         </div>
         <hr />
