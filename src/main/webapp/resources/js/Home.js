@@ -446,6 +446,8 @@ $('#btnLimpiarFiltro').click(function () {
     $('#cboTipoFiltro').val(0).change();
     $('#cboFiltroDeporte').val(1);
     $('#cboFiltroMes').val(0);
+    getCuotaPromedio();
+    getGananciaAndRentabilidad();
 });
 
 $('#btnFiltrar').click(function () {
@@ -457,12 +459,16 @@ $('#btnFiltrar').click(function () {
         grid.setFilterModel({
             'sport.name': { filter: filtroDeporte, type: 'equals' },
         });
+        getCuotaPromedio(true);
+        getGananciaAndRentabilidad(true);
     }
     else if (filtro == 2) {
         filtroMes = $("#cboFiltroMes option:selected").text();
         grid.setFilterModel({
             'mes': { filter: filtroMes, type: 'equals' },
         });
+        getCuotaPromedio(true);
+        getGananciaAndRentabilidad(true);
     }
     else if (filtro == 3) {
         if (filtroMes != 0) {
@@ -471,6 +477,8 @@ $('#btnFiltrar').click(function () {
                 'sport.name': { filter: filtroDeporte, type: 'equals' },
                 'mes': { filter: filtroMes, type: 'equals' },
             });
+            getCuotaPromedio(true);
+            getGananciaAndRentabilidad(true);
         }
         else {
             toastr.warning("", "Seleccione un mes para filtrar");
@@ -478,27 +486,47 @@ $('#btnFiltrar').click(function () {
     }       
 });
 
-function getCuotaPromedio() {
+function getCuotaPromedio(filter = false) {
     let totalCuota = 0;
     let totalPicks = 0;
-    grid.forEachNode((node) => {
-        if (node.data.cuota) {
-            totalCuota += parseFloat(node.data.cuota);
-            totalPicks++;
-        }
-    });
+    if (filter) { 
+        grid.forEachNodeAfterFilter((node) => {
+            if (node.data.cuota) {
+                totalCuota += parseFloat(node.data.cuota);
+                totalPicks++;
+            }
+        });
+    }
+    else {
+        grid.forEachNode((node) => {
+            if (node.data.cuota) {
+                totalCuota += parseFloat(node.data.cuota);
+                totalPicks++;
+            }
+        });        
+    }
     $("#txtCuotaPromedio").text(totalPicks > 0 ? 'Cuota: '+(totalCuota / totalPicks).toFixed(2) : 'Cuota: ' + 0);
 }
 
-function getGananciaAndRentabilidad() {
+function getGananciaAndRentabilidad(filter = false) {
     let totalGanancia = 0;
-    grid.forEachNode((node) => {
-        if (node.data.utilidadPick) {
-            totalGanancia += parseFloat(node.data.utilidadPick);
-        }
-    });
-    $("#txtGanancia").text('Ganancia: ' + totalGanancia.toFixed(2));
-    $("#txtRentabilidad").text('Rentabilidad: ' + (totalGanancia / $("#txtSaldoInicial").text() * 100).toFixed(0) + '%');
+    if (filter) {
+        grid.forEachNodeAfterFilter((node) => {
+            if (node.data.utilidadPick) {
+                totalGanancia += parseFloat(node.data.utilidadPick);
+            }
+        });
+    }
+    else {
+        grid.forEachNode((node) => {
+            if (node.data.utilidadPick) {
+                totalGanancia += parseFloat(node.data.utilidadPick);
+            }
+        });     
+    }
+    $("#txtGanancia").text('Ganancia: ' + totalGanancia.toFixed(0));
+    const saldoInicial = parseFloat($("#txtSaldoInicial").text().replace(/[^0-9.-]+/g, ""));
+    $("#txtRentabilidad").text('Rentabilidad: ' + (saldoInicial ? (totalGanancia / saldoInicial * 100).toFixed(2) : 0) + '%');
 }
 
 
