@@ -6,13 +6,13 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-12">
-                <button class="btn btn-warning" id="btnNuevoPickNBA"><i class="fas fa-plus-circle"></i> Registrar NBA</button>
-                <button class="btn btn-primary" id="btnNuevoPickMLB"><i class="fas fa-plus-circle"></i> Registrar MLB</button>
-                <button class="btn btn-success" id="btnNuevoPickFutbol"><i class="fas fa-plus-circle"></i> Registrar Futbol</button>
+            <div class="col-sm-9">
+                <button class="btn btn-warning" id="btnNuevoPickNBA"><i class="fas fa-plus-circle"></i> NBA</button>
+                <button class="btn btn-primary" id="btnNuevoPickMLB"><i class="fas fa-plus-circle"></i> MLB</button>
+                <button class="btn btn-success" id="btnNuevoPickFutbol"><i class="fas fa-plus-circle"></i> Futbol</button>
                 
                 <label class="pl-2" for="cboTipoFiltro">Filtrar por:</label>
-                <select class="form-control col-sm-1" name="tipoFiltro" id="cboTipoFiltro" style="display: inline;">
+                <select class="form-control col-sm-2" name="tipoFiltro" id="cboTipoFiltro" style="display: inline;">
                     <option value="0">Seleccione</option>
                     <option value="1">Deporte</option>
                     <option value="2">Mes</option>
@@ -20,11 +20,11 @@
                 </select>
 
                 <label class="pl-2" for="cboFiltroDeporte"></label>
-                <select class="form-control col-sm-1" name="filtroDeporte" id="cboFiltroDeporte" style="display: inline;">
+                <select class="form-control col-sm-2" name="filtroDeporte" id="cboFiltroDeporte" style="display: inline;">
                 </select>
 
                 <label class="pl-2" for="cboFiltroMes"></label>
-                <select class="form-control col-sm-1" name="filtroMes" id="cboFiltroMes" style="display: inline;">
+                <select class="form-control col-sm-2" name="filtroMes" id="cboFiltroMes" style="display: inline;">
                     <option value="0">Seleccione</option>
                     <option value="1">Enero</option>
                     <option value="2">Febrero</option>
@@ -43,9 +43,11 @@
                 <button class="btn btn-secondary" id="btnFiltrar" style="display: inline;"><i class="fas fa-filter"></i></button>
                 <button class="btn btn-secondary" id="btnLimpiarFiltro" style="display: inline;"><i class="fas fa-eraser"></i></button>
 
-                <span id="txtCuotaPromedio"></span>
-                <span id="txtGanancia"></span>
-                <span id="txtRentabilidad"></span>
+            </div>
+            <div class="col-sm-3">
+                <span class="badge text-bg-info pr-1" id="txtCuotaPromedio"></span>
+                <span class="badge text-bg-info pr-1" id="txtGanancia"></span>
+                <span class="badge text-bg-info pr-1" id="txtRentabilidad"></span>
             </div>
         </div>
         <hr />
