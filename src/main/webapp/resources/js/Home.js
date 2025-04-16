@@ -369,12 +369,13 @@ $("#btnGuardarPick").click(function () {
             $("#modalData").find("div.modal-content").LoadingOverlay("hide");
             return response.ok ? response.json() : Promise.reject(response);
         })
-        .then((responseJson) => {
+        .then(async (responseJson) => {
             if (responseJson.Estado) {
                 $("#modalData").modal("hide");
-                getGrid();
+                await getGrid();
                 actualizarSaldo();
                 getCuotaPromedio();
+                getGananciaAndRentabilidad();
                 swal("Pick registrado", "", "success");
             }
             else {
