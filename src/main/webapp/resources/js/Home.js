@@ -398,7 +398,7 @@ async function actualizarSaldo() {
             return response.json();
         })
         .then(data => {
-            $('#saldoActual').text(new Intl.NumberFormat('en-CO', { style: 'currency', currency: 'USD' }).format(data));
+            $('#saldoActual').text(new Intl.NumberFormat('en-CO', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(data));
         })
         .catch(error => {
             console.error(error.message);
