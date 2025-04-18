@@ -114,17 +114,17 @@
                             <div class="form-row">
                                 <div class="form-group col-sm-4">
                                     <label for="txtEquipoLocal">Equipo Local</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtEquipoLocal" name="equipoLocal" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtEquipoLocal" name="equipoLocal">
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label for="txtEquipoVisitante">Equipo Visitante</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtEquipoVisitante" name="equipoVisitante" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtEquipoVisitante" name="equipoVisitante">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-sm-4">
                                     <label for="txtValor">Valor Apostado</label>
-                                    <input type="number" class="form-control form-control-sm input-validar" id="txtValor" name="valor" autocomplete="off">
+                                    <input type="number" class="form-control form-control-sm input-validar" id="txtValor" name="valor">
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label for="txtCuota">Cuota</label>
