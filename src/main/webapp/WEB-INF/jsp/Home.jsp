@@ -46,8 +46,8 @@
             </div>
             <div class="col-sm-3">
                 <span class="badge text-bg-info pr-1" id="txtCuotaPromedio"></span>
-                <span class="badge text-bg-info pr-1" id="txtGanancia"></span>
-                <span class="badge text-bg-info pr-1" id="txtRentabilidad"></span>
+                <span class="badge pr-1" id="txtGanancia"></span>
+                <span class="badge pr-1" id="txtRentabilidad"></span>
             </div>
         </div>
         <hr />
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label for="txtJugador">Jugador</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtJugador" name="jugador" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtJugador" name="jugador">
                                 </div>
                             </div>
                             <div class="form-row">
