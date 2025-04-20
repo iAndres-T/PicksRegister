@@ -1,0 +1,14 @@
+.text-bg-danger {
+  color: #fff !important;
+  background-color: rgba(220, 53, 69, 1) !important;
+}
+
+.text-bg-info {
+  color: #000 !important;
+  background-color: rgba(13, 202, 240, 1) !important;
+}
+
+.text-bg-success {
+  color: #fff !important;
+  background-color: rgba(25, 135, 84, 1) !important;
+}
