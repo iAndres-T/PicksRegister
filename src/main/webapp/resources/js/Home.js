@@ -244,7 +244,7 @@ function mostrarModal(modelo = MODELO_BASE) {
     $("#cboCountry").val(modelo.country.id);
     $("#txtEquipoLocal").val(modelo.equipoLocal);
     $("#txtEquipoVisitante").val(modelo.equipoVisitante);
-    $("#txtDescripcion").val(modelo.descripcion);
+    $("#cboDescripcion").val(modelo.descripcion);
     $("#txtJugador").val(modelo.jugador);
     $("#txtValor").val(modelo.valor);
     $("#txtCuota").val(modelo.cuota);
@@ -288,7 +288,7 @@ function loadLinea(tipo) {
 
 async function loadDescripcion(deporte) {
     $("#cboDescripcion").empty();
-    fetch("/picks/loadDetallePicks?deporte=" + deporte)
+    await fetch("/picks/loadDetallePicks?deporte=" + deporte)
         .then((response) => {
             return response.ok ? response.json() : Promise.reject(response);
         })
@@ -526,8 +526,20 @@ function getGananciaAndRentabilidad(filter = false) {
         });     
     }
     $("#txtGanancia").text('Ganancia: ' + totalGanancia.toFixed(0));
+    if (totalGanancia < 0) {
+        $("#txtGanancia").removeClass('text-bg-success').addClass('text-bg-danger');
+    } else {
+        $("#txtGanancia").removeClass('text-bg-danger').addClass('text-bg-success');
+    }
+
     const saldoInicial = parseFloat($("#txtSaldoInicial").text().replace(/[^0-9.-]+/g, ""));
-    $("#txtRentabilidad").text('Rentabilidad: ' + (saldoInicial ? (totalGanancia / saldoInicial * 100).toFixed(2) : 0) + '%');
+    const rentabilidad = saldoInicial ? (totalGanancia / saldoInicial * 100).toFixed(2) : 0;
+    $("#txtRentabilidad").text('Rentabilidad: ' + rentabilidad + '%');
+    if (rentabilidad < 0) {
+        $("#txtRentabilidad").removeClass('text-bg-success').addClass('text-bg-danger');
+    } else {
+        $("#txtRentabilidad").removeClass('text-bg-danger').addClass('text-bg-success');
+    }
 }
 
 
