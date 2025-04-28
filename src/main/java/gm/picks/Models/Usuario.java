@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,12 +22,15 @@ public class Usuario {
     Integer id;
     @Column(unique = true, nullable = false)
     String userName;
+    @JsonIgnore
     String password;
     Double saldoActual;
     Double capitalInvertido;
     @Column(nullable = false, columnDefinition = "FLOAT DEFAULT 0")
     Double totalRetiros;
-    Double saldoInicial;
+    Double saldoInicialMes;
+    Double saldoInicialHistory;
+    String mesActual;
     @ManyToOne
     @JoinColumn(name = "idRol", referencedColumnName = "id")
     Rol rol;
