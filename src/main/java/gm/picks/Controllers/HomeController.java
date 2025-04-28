@@ -14,7 +14,7 @@ public class HomeController {
     @Autowired
     UsuarioService usuarioService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/Home", method = RequestMethod.GET)
     public String Home(ModelMap modelo) {
         modelo.put("Content", "Home.jsp");
         modelo.put("Script", "Home.js");
