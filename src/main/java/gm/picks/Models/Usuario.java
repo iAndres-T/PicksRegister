@@ -22,7 +22,6 @@ public class Usuario {
     Integer id;
     @Column(unique = true, nullable = false)
     String userName;
-    @JsonIgnore
     String password;
     Double saldoActual;
     Double capitalInvertido;
