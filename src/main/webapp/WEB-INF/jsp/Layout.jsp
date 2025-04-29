@@ -95,7 +95,7 @@
                                 <span>Bank Inicial: </span>
                                 <span id="txtSaldoInicial">
                                     <fmt:setLocale value="en_CO"/>
-                                    <fmt:formatNumber type="currency" value="${Usuario.saldoInicial}" maxFractionDigits="0" minFractionDigits="0"/>
+                                    <fmt:formatNumber type="currency" value="${Usuario.saldoInicialMes}" maxFractionDigits="0" minFractionDigits="0"/>
                                 </span>
                                 <a class="dropdown-item" href="#" id="btnRecargarSaldo">
                                     <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
