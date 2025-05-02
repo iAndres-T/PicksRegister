@@ -8,8 +8,6 @@ import lombok.ToString;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Data
 @NoArgsConstructor
