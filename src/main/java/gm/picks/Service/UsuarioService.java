@@ -1,41 +1,69 @@
 package gm.picks.Service;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import gm.picks.Models.Usuario;
 import gm.picks.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    private Argon2 argon2 = Argon2Factory.create();
 
     @Override
-    public Usuario findUsuario(int idUser) {
+    public Usuario findUsuarioById(int idUser) {
         return usuarioRepository.findById(idUser).orElse(null);
     }
 
     @Override
-    public boolean validateLogin(Usuario usuario) {
-        Usuario user = usuarioRepository.findAll()
+    public Usuario findUsuarioByName(String username){
+        return usuarioRepository.findAll()
                 .stream()
-                .filter(u -> u.getUserName().equals(usuario.getUserName()))
+                .filter(u -> u.getUserName().equals(username))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public String validateLogin(String userName, String password) {
+        Usuario user = findUsuarioByName(userName);
         if (user != null) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            return encoder.matches(usuario.getPassword(), user.getPassword());
+            if(argon2.verify(user.getPassword(), password.toCharArray())){
+                if(consultarMes(user.getMesActual())){
+                    return "redirect:/picks/Home";
+                }
+                return "redirect:/picks/Home-UpdateMes";
+            }
+            else{
+                return "Invalid";
+            }
         }
-        return false;
+        else {
+            return "Invalid";
+        }
+    }
+
+    boolean consultarMes(String mes){
+        String currentMonth = new java.text.SimpleDateFormat("MMMM").format(new java.util.Date());
+        return mes.equals(currentMonth);
     }
 
     @Override
     public void updateSaldo(int idUser) {
-        Usuario usuario = findUsuario(idUser);
+        Usuario usuario = findUsuarioById(idUser);
         Object[] rendimientos = getRendimientos(usuario.getId(), 0, "");
         usuario.setSaldoActual((Double) rendimientos[1]);
+        addUsuario(usuario);
+    }
+
+    @Override
+    public void updateMesActual(String userName, String newMes){
+        Usuario usuario = findUsuarioByName(userName);
+        usuario.setMesActual(newMes);
         addUsuario(usuario);
     }
 
@@ -47,8 +75,8 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public void addUsuario(Usuario usuario) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        usuario.setPassword(encoder.encode(usuario.getPassword()));
+        String hashedPassword = argon2.hash(2, 65536, 1, usuario.getPassword().toCharArray());
+        usuario.setPassword(hashedPassword);
         usuarioRepository.save(usuario);
     }
 }
