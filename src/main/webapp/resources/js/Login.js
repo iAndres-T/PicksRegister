@@ -1,6 +1,7 @@
 $("#btnLogin").click(function () {
   const inputs = $("input.input-validar").serializeArray();
   const inputs_sin_valor = inputs.filter((item) => item.value.trim() == "");
+  let URL;
 
   if (inputs_sin_valor.length > 0) {
     const mensaje = `Debe completar el campo`;
@@ -24,9 +25,14 @@ $("#btnLogin").click(function () {
       const text = await response.text();
       if (text === "Invalid") {
         toastr.warning("", "Usuario o contraseña incorrectos");
-      } else if (text.startsWith("redirect:")) {
-        const url = text.replace("redirect:", "");
-        window.location.href = url;
+      }
+      else if (text.endsWith("UpdateMes")) {
+        URL = text.split("-")[0].replace("redirect:", "");
+        window.location.href = URL;
+      }
+      else if (text.startsWith("redirect:")) {
+        URL = text.replace("redirect:", "");
+        window.location.href = URL;
       }
     })
     .catch((error) => {
