@@ -18,13 +18,13 @@ public class HomeController {
     public String Home(ModelMap modelo) {
         modelo.put("Content", "Home.jsp");
         modelo.put("Script", "Home.js");
-        modelo.put("Usuario", usuarioService.findUsuario(1));
+        modelo.put("Usuario", usuarioService.findUsuarioById(1));
         return "Layout";
     }
     
     @RequestMapping(value = "/getSaldoActual", method = RequestMethod.GET)
     @ResponseBody
     public String getSaldoActual() {
-        return usuarioService.findUsuario(1).getSaldoActual().toString();
+        return usuarioService.findUsuarioById(1).getSaldoActual().toString();
     }
 }
