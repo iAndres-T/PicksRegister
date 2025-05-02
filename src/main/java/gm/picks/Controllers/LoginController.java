@@ -32,12 +32,7 @@ public class LoginController {
   public String login(@RequestBody String usuarioModel) throws JsonProcessingException {
     try {
       Usuario usuario = objectMapper.readValue(usuarioModel, Usuario.class);
-      boolean validate = usuarioService.validateLogin(usuario);
-      if (validate) {
-        return "redirect:/picks/Home";
-      } else {
-        return "Invalid";
-      }
+      return usuarioService.validateLogin(usuario.getUserName(), usuario.getPassword());
     } catch (Exception e) {
       return "Error: " + e.getMessage();
     }
