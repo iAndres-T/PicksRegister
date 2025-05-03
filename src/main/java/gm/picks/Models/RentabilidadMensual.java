@@ -34,5 +34,5 @@ public class RentabilidadMensual {
     String mes;
 
     @Column(nullable = false)
-    Integer anio;
+    String anio;
 }
