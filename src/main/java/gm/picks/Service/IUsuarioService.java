@@ -2,6 +2,8 @@ package gm.picks.Service;
 
 import gm.picks.Models.Usuario;
 
+import java.util.Map;
+
 public interface IUsuarioService {
 
     public Usuario findUsuarioById(int idUser);
@@ -12,7 +14,7 @@ public interface IUsuarioService {
 
     public void updateSaldo(int idUser);
 
-    public void updateMesActual(String userName, String newMes);
+    public boolean actualizarBankMes(Map<String, Object> data);
 
     public Object[] getRendimientos(int userId, Integer sportId, String mes);
 
