@@ -68,11 +68,42 @@
     </div>
   </div>
 
+  <!--Modal Mes-->
+  <div class="modal fade" id="modalBank" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6>Modificar Capital</h6>
+          <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-sm-12">                
+                <div class="form-row">
+                  <div class="form-group col-sm-12">
+                    <label for="txtNuevoCapital">Nuevo Capital</label>
+                    <input type="number" class="form-control form-control-sm" id="txtNuevoCapital" name="nuevoCapital">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-sm" type="button" id="btnActualizarBank">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap 5 JS Bundle -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <c:if test="${not empty Script}">
     <script src="${pageContext.request.contextPath}/resources/js/${Script}"></script>
   </c:if>
