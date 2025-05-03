@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gm.picks.Models.Usuario;
 import gm.picks.Service.UsuarioService;
 
+import java.util.Map;
+
 @Controller
 public class LoginController {
   private ObjectMapper objectMapper = new ObjectMapper();
@@ -35,6 +37,16 @@ public class LoginController {
       return usuarioService.validateLogin(usuario.getUserName(), usuario.getPassword());
     } catch (Exception e) {
       return "Error: " + e.getMessage();
+    }
+  }
+
+  @RequestMapping(value = "/actualizarBank", method = RequestMethod.POST)
+  @ResponseBody
+  public boolean actualizarBank(@RequestBody Map<String, Object> data) {
+    try {
+        return usuarioService.actualizarBankMes(data);
+    } catch (Exception e) {
+        return false;
     }
   }
 }
