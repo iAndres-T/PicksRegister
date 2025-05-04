@@ -24,7 +24,7 @@ public class Usuario {
     Double saldoActual;
     Double capitalInvertido;
     @Column(nullable = true, columnDefinition = "FLOAT DEFAULT 0")
-    Double totalRetiros;
+    Double totalRetiros = 0.0;
     Double saldoInicialMes;
     Double saldoInicialHistory;
     String mesActual;
