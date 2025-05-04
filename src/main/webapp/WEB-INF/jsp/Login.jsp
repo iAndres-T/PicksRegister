@@ -20,11 +20,11 @@
       <form>
         <div class="mb-3">
           <label for="loginUsername" class="form-label">Username</label>
-          <input type="text" class="form-control input-validar" id="loginUserName" placeholder="Username">
+          <input type="text" class="form-control login-validar" id="loginUserName" placeholder="Username" name="loginUser">
         </div>
         <div class="mb-3">
           <label for="loginPassword" class="form-label">Password</label>
-          <input type="password" class="form-control input-validar" id="loginPassword" placeholder="Password">
+          <input type="password" class="form-control login-validar" id="loginPassword" placeholder="Password" name="loginPass">
         </div>
         <div class="d-grid gap-2">
           <button type="button" class="btn btn-primary" id="btnLogin">Iniciar Sesión</button>
@@ -47,16 +47,20 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="registerUsername" class="form-label">Username</label>
-              <input type="text" class="form-control input-validar" id="registerUsername" placeholder="Username">
+              <label for="registerUserName" class="form-label">Username</label>
+              <input type="text" class="form-control register-validar" id="registerUserName" placeholder="Username" name="registerUser">
+            </div>
+            <div class="mb-3">
+              <label for="registerCapital" class="form-label">Capital Inicial</label>
+              <input type="number" class="form-control register-validar" id="registerCapital" placeholder="Capital" name="registerCap">
             </div>
             <div class="mb-3">
               <label for="registerPassword" class="form-label">Password</label>
-              <input type="password" class="form-control input-validar" id="registerPassword" placeholder="Password">
+              <input type="password" class="form-control register-validar" id="registerPassword" placeholder="Password" name="registerPass">
             </div>
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Confirmar Password</label>
-              <input type="password" class="form-control input-validar" id="confirmPassword" placeholder="Confirmar Password">
+              <input type="password" class="form-control register-validar" id="confirmPassword" placeholder="Confirmar Password" name="confirmPass">
             </div>
           </div>
           <div class="modal-footer">
