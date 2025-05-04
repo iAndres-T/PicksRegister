@@ -14,9 +14,9 @@ public interface IUsuarioService {
 
     public void updateSaldo(int idUser);
 
-    public boolean actualizarBankMes(Map<String, Object> data);
+    public String actualizarBankMes(Map<String, Object> data);
 
     public Object[] getRendimientos(int userId, Integer sportId, String mes);
 
-    public void addUsuario(Usuario usuario);
+    public String addUsuario(Usuario usuario);
 }
