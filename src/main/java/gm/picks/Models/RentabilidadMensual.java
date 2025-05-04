@@ -21,11 +21,11 @@ public class RentabilidadMensual {
     @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)
     Usuario usuario;
 
-    @Column(nullable = false)
-    Double ganancia;
+    @Column(nullable = true, columnDefinition = "FLOAT DEFAULT 0")
+    private Double ganancia = 0.0;
 
-    @Column(nullable = false)
-    Double porcentaje;
+    @Column(nullable = true, columnDefinition = "FLOAT DEFAULT 0")
+    private Double porcentaje = 0.0;
 
     @Column(nullable = false)
     Double saldoMes;
