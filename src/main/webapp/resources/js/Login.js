@@ -68,10 +68,10 @@ $("#btnActualizarBank").click(function () {
 
 async function actualizarBank(bank) {
   let data = {};
-  data["userName"] = $("#registerUsername").val();
+  data["userName"] = $("#loginUserName").val();
   data["capital"] = bank;
   data["mes"] = monthNames[new Date().getMonth()];
-  data["anio"] = new Date().getFullYear();
+  data["anio"] = new Date().getFullYear().toString();
 
   fetch("/picks/actualizarBank", {
     method: "POST",
