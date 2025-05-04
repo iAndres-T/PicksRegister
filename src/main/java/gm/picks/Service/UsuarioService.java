@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -26,7 +27,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario findUsuarioByName(String username){
+    public Usuario findUsuarioByName(String username) {
         return usuarioRepository.findAll()
                 .stream()
                 .filter(u -> u.getUserName().equals(username))
@@ -38,22 +39,20 @@ public class UsuarioService implements IUsuarioService {
     public String validateLogin(String userName, String password) {
         Usuario user = findUsuarioByName(userName);
         if (user != null) {
-            if(argon2.verify(user.getPassword(), password.toCharArray())){
-                if(consultarMes(user.getMesActual())){
+            if (argon2.verify(user.getPassword(), password.toCharArray())) {
+                if (consultarMes(user.getMesActual())) {
                     return "redirect:/picks/Home";
                 }
                 return "redirect:/picks/Home-UpdateMes";
-            }
-            else{
+            } else {
                 return "Invalid";
             }
-        }
-        else {
+        } else {
             return "Invalid";
         }
     }
 
-    boolean consultarMes(String mes){
+    boolean consultarMes(String mes) {
         String currentMonth = new java.text.SimpleDateFormat("MMMM").format(new java.util.Date());
         currentMonth = currentMonth.substring(0, 1).toUpperCase() + currentMonth.substring(1).toLowerCase();
         return mes.equals(currentMonth);
@@ -75,8 +74,10 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public void addUsuario(Usuario usuario) {
-        String hashedPassword = argon2.hash(2, 65536, 1, usuario.getPassword().toCharArray());
-        usuario.setPassword(hashedPassword);
+        if (usuario.getId() == null) {
+            String hashedPassword = argon2.hash(2, 65536, 1, usuario.getPassword().toCharArray());
+            usuario.setPassword(hashedPassword);           
+        }
         usuarioRepository.save(usuario);
     }
 
@@ -84,40 +85,47 @@ public class UsuarioService implements IUsuarioService {
     public boolean actualizarBankMes(Map<String, Object> data) {
         try {
             String userName = (String) data.get("userName");
-            Double capital = data.get("capital") != null ? ((Number) data.get("capital")).doubleValue() : null;
+            Double capital = data.get("capital") != null ? Double.parseDouble(data.get("capital").toString()) : null;
             String mes = (String) data.get("mes");
             String anio = (String) data.get("anio");
             Usuario usuario = findUsuarioByName(userName);
 
             RentabilidadMensual lastRent = rentabilidadMensualRepository.findAll()
-                                                                .stream()
-                                                                .filter(r -> r.getUsuario().getId() == usuario.getId())
-                                                                .max((r1, r2) -> r1.getId() - r2.getId())
-                                                                .orElse(null);
-            
-            
-            lastRent.setId(null);
-            lastRent.setMes(mes);
-            lastRent.setAnio(anio);
-            lastRent.setUsuario(usuario);
-            lastRent.setGanancia(0.0);
-            lastRent.setPorcentaje(0.0);
-            usuario.setSaldoInicialMes(capital);
+                    .stream()
+                    .filter(r -> Objects.equals(r.getUsuario().getId(), usuario.getId()))
+                    .max((r1, r2) -> r1.getId() - r2.getId())
+                    .orElse(null);
+
+            RentabilidadMensual newRent = new RentabilidadMensual();
+            newRent.setMes(mes);
+            newRent.setAnio(anio);
+            newRent.setUsuario(usuario);
+            newRent.setSaldoMes(lastRent.getSaldoMes());
             if (capital != null) {
-
+                
                 if (lastRent.getSaldoMes() > capital) {
-                    usuario.setSaldoActual(usuario.getSaldoActual() - (lastRent.getSaldoMes() - capital));
-                    usuario.setTotalRetiros(usuario.getTotalRetiros() + (lastRent.getSaldoMes() - capital));
-                } else {
-                    usuario.setSaldoActual(usuario.getSaldoActual() + (capital - lastRent.getSaldoMes()));
-                    usuario.setCapitalInvertido(usuario.getCapitalInvertido() + (capital - lastRent.getSaldoMes()));
+                    if (capital > usuario.getSaldoActual()) {
+                        usuario.setCapitalInvertido(usuario.getCapitalInvertido() + (capital - usuario.getSaldoActual()));
+                    }
+                    else {
+                        usuario.setTotalRetiros(usuario.getTotalRetiros() + (usuario.getSaldoActual() - capital));                      
+                    }
+                    usuario.setSaldoActual(usuario.getSaldoActual() - (usuario.getSaldoActual() - capital));
+                } 
+                else if (lastRent.getSaldoMes() < capital) {
+                    usuario.setCapitalInvertido(usuario.getCapitalInvertido() + (capital - usuario.getSaldoActual()));
+                    usuario.setSaldoActual(usuario.getSaldoActual() + (capital - usuario.getSaldoActual()));
                 }
-
-                lastRent.setSaldoMes(capital);
+                else {
+                    return false;
+                }
+                
+                usuario.setSaldoInicialMes(capital);
+                newRent.setSaldoMes(capital);
             }
+
             usuario.setMesActual(mes);
-            addUsuario(usuario);
-            rentabilidadMensualRepository.save(lastRent);
+            rentabilidadMensualRepository.save(newRent);
 
             return true;
         } catch (Exception e) {
