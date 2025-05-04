@@ -40,13 +40,24 @@ public class LoginController {
     }
   }
 
+  @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
+  @ResponseBody
+  public String registerUser(@RequestBody String usuarioModel) throws JsonProcessingException {
+    try {
+      Usuario usuario = objectMapper.readValue(usuarioModel, Usuario.class);
+      return usuarioService.addUsuario(usuario);
+    } catch (Exception e) {
+      return "Error: " + e.getMessage();
+    }
+  }
+
   @RequestMapping(value = "/actualizarBank", method = RequestMethod.POST)
   @ResponseBody
-  public boolean actualizarBank(@RequestBody Map<String, Object> data) {
+  public String actualizarBank(@RequestBody Map<String, Object> data) {
     try {
         return usuarioService.actualizarBankMes(data);
     } catch (Exception e) {
-        return false;
+        return e.getMessage();
     }
   }
 }
