@@ -23,7 +23,7 @@ public class Usuario {
     String password;
     Double saldoActual;
     Double capitalInvertido;
-    @Column(nullable = false, columnDefinition = "FLOAT DEFAULT 0")
+    @Column(nullable = true, columnDefinition = "FLOAT DEFAULT 0")
     Double totalRetiros;
     Double saldoInicialMes;
     Double saldoInicialHistory;
@@ -32,6 +32,6 @@ public class Usuario {
     @JoinColumn(name = "idRol", referencedColumnName = "id")
     Rol rol;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
+    @Column(nullable = true, updatable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
     Date fechaCreacion;
 }
