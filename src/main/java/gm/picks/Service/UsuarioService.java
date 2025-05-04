@@ -73,16 +73,21 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public void addUsuario(Usuario usuario) {
+    public String addUsuario(Usuario usuario) {
         if (usuario.getId() == null) {
+            if (usuarioRepository.findAll().stream().anyMatch(u -> u.getUserName().equals(usuario.getUserName()))) {
+                return "Exists";
+            }
             String hashedPassword = argon2.hash(2, 65536, 1, usuario.getPassword().toCharArray());
-            usuario.setPassword(hashedPassword);           
+            usuario.setPassword(hashedPassword);
+            usuario.setFechaCreacion(new java.util.Date());
         }
         usuarioRepository.save(usuario);
+        return "OK";
     }
 
     @Override
-    public boolean actualizarBankMes(Map<String, Object> data) {
+    public String actualizarBankMes(Map<String, Object> data) {
         try {
             String userName = (String) data.get("userName");
             Double capital = data.get("capital") != null ? Double.parseDouble(data.get("capital").toString()) : null;
@@ -117,7 +122,7 @@ public class UsuarioService implements IUsuarioService {
                     usuario.setSaldoActual(usuario.getSaldoActual() + (capital - usuario.getSaldoActual()));
                 }
                 else {
-                    return false;
+                    return "Same";
                 }
                 
                 usuario.setSaldoInicialMes(capital);
@@ -127,9 +132,9 @@ public class UsuarioService implements IUsuarioService {
             usuario.setMesActual(mes);
             rentabilidadMensualRepository.save(newRent);
 
-            return true;
+            return "true";
         } catch (Exception e) {
-            return false;
+            return e.getMessage();
         }
     }
 }
