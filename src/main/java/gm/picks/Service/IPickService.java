@@ -17,4 +17,6 @@ public interface IPickService {
     public List<Pick> listPicks();
 
     public void registrarPick(Pick pick);
+
+    public void guardarRentabilidad(RentabilidadMensual rentabilidadMensual);
 }

@@ -35,7 +35,7 @@ const meses = [
 
 let grid;
 
-$(document).ready(async function () { 
+$(document).ready(async function () {
     loadSelects();
     $("#cboTipoFiltro").val(0).change();
     await getGrid();
@@ -78,7 +78,7 @@ async function getGrid() {
                 pinned: 'left',
                 cellStyle: { 'text-align': 'center' },
                 cellRenderer: params => {
-                        return `<button type="button" class="btn btn-outline-info editar-pick"><i class="fa fa-edit"></i></button>`;
+                    return `<button type="button" class="btn btn-outline-info editar-pick"><i class="fa fa-edit"></i></button>`;
                 }
             },
             {
@@ -104,11 +104,11 @@ async function getGrid() {
             {
                 headerName: 'Pago',
                 field: 'pagoPick',
-                cellStyle: params => { 
-                    if(params.data.resultado === "Acierto") {
+                cellStyle: params => {
+                    if (params.data.resultado === "Acierto") {
                         return { color: 'green', fontWeight: 'bold' };
                     }
-                    else if(params.data.resultado === "Perdido") {
+                    else if (params.data.resultado === "Perdido") {
                         return { color: 'red', fontWeight: 'bold' };
                     }
                 }
@@ -117,11 +117,11 @@ async function getGrid() {
             {
                 headerName: 'Utilidad',
                 field: 'utilidadPick',
-                cellStyle: params => { 
-                    if(params.data.resultado === "Acierto") {
+                cellStyle: params => {
+                    if (params.data.resultado === "Acierto") {
                         return { color: 'green', fontWeight: 'bold' };
                     }
-                    else if(params.data.resultado === "Perdido") {
+                    else if (params.data.resultado === "Perdido") {
                         return { color: 'red', fontWeight: 'bold' };
                     }
                 }
@@ -170,26 +170,26 @@ async function getGrid() {
     grid = agGrid.createGrid(myGrid, gridOptions);
 }
 
-async function loadSelects () {
+async function loadSelects() {
     // Cargar Combo Casino
-    fetch("/picks/loadCasinos")  
+    fetch("/picks/loadCasinos")
         .then((response) => {
             return response.ok ? response.json() : Promise.reject(response);
         })
         .then((responseJson) => {
             if (responseJson.length > 0) {
-                $("#cboCasino").empty(); 
+                $("#cboCasino").empty();
                 responseJson.forEach((casino) => {
-                    $("#cboCasino").append(  
+                    $("#cboCasino").append(
                         $("<option>").val(casino.id).text(casino.name)
                     );
                 });
             }
         })
         .catch((error) => {
-            console.error("Error al obtener la lista de casinos:", error); 
+            console.error("Error al obtener la lista de casinos:", error);
         });
-    
+
     // Cargar Combo Deporte
     fetch("/picks/loadSports")
         .then((response) => {
@@ -280,7 +280,7 @@ function loadLinea(tipo) {
         $("#cboLinea").append($("<option>").val("Over").text("Over"));
         $("#cboLinea").append($("<option>").val("Under").text("Under"));
     }
-    else if (tipo === "Futbol") { 
+    else if (tipo === "Futbol") {
         $("#cboLinea").append($("<option>").val("Sencilla").text("Sencilla"));
         $("#cboLinea").append($("<option>").val("Parlay").text("Parlay"));
     }
@@ -371,11 +371,37 @@ $("#btnGuardarPick").click(function () {
         })
         .then(async (responseJson) => {
             if (responseJson.Estado) {
-                $("#modalData").modal("hide");
                 await getGrid();
                 actualizarSaldo();
                 getCuotaPromedio();
                 getGananciaAndRentabilidad();
+                
+                let ganancia = 0;
+                let rentabilidad = 0;
+                grid.forEachNode((node) => {
+                    if (node.data.year === modelo["year"] && node.data.mes === modelo["mes"]) {
+                        if (node.data.utilidadPick) {
+                            ganancia += parseFloat(node.data.utilidadPick);
+                        }
+                    }
+                });
+                const saldoInicial = parseFloat($("#txtSaldoInicial").text().replace(/[^0-9.-]+/g, ""));
+                rentabilidad = saldoInicial ? (ganancia / saldoInicial * 100).toFixed(2) : 0;
+                await fetch("/picks/guardarRentabilidad", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        usuario: modelo["usuario"],
+                        ganancia: ganancia,
+                        porcentaje: rentabilidad,
+                        mes: modelo["mes"],
+                        anio: modelo["year"],
+                    }),
+                });
+
+                $("#modalData").modal("hide");
                 swal("Pick registrado", "", "success");
             }
             else {
@@ -456,7 +482,7 @@ $('#btnFiltrar').click(function () {
     const filtroDeporte = $("#cboFiltroDeporte option:selected").text();
     let filtroMes = $("#cboFiltroMes").val();
 
-    if (filtro == 1) {      
+    if (filtro == 1) {
         grid.setFilterModel({
             'sport.name': { filter: filtroDeporte, type: 'equals' },
         });
@@ -484,13 +510,13 @@ $('#btnFiltrar').click(function () {
         else {
             toastr.warning("", "Seleccione un mes para filtrar");
         }
-    }       
+    }
 });
 
 function getCuotaPromedio(filter = false) {
     let totalCuota = 0;
     let totalPicks = 0;
-    if (filter) { 
+    if (filter) {
         grid.forEachNodeAfterFilter((node) => {
             if (node.data.cuota) {
                 totalCuota += parseFloat(node.data.cuota);
@@ -504,9 +530,9 @@ function getCuotaPromedio(filter = false) {
                 totalCuota += parseFloat(node.data.cuota);
                 totalPicks++;
             }
-        });        
+        });
     }
-    $("#txtCuotaPromedio").text(totalPicks > 0 ? 'Cuota: '+(totalCuota / totalPicks).toFixed(2) : 'Cuota: ' + 0);
+    $("#txtCuotaPromedio").text(totalPicks > 0 ? 'Cuota: ' + (totalCuota / totalPicks).toFixed(2) : 'Cuota: ' + 0);
 }
 
 function getGananciaAndRentabilidad(filter = false) {
@@ -523,7 +549,7 @@ function getGananciaAndRentabilidad(filter = false) {
             if (node.data.utilidadPick) {
                 totalGanancia += parseFloat(node.data.utilidadPick);
             }
-        });     
+        });
     }
     $("#txtGanancia").text('Ganancia: ' + totalGanancia.toFixed(0));
     if (totalGanancia < 0) {

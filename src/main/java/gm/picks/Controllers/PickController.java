@@ -7,6 +7,7 @@ import gm.picks.Models.Country;
 import gm.picks.Models.DetallePick;
 import gm.picks.Models.GenericResponse;
 import gm.picks.Models.Pick;
+import gm.picks.Models.RentabilidadMensual;
 import gm.picks.Models.Sport;
 import gm.picks.Service.PickService;
 import gm.picks.Service.UsuarioService;
@@ -33,25 +34,25 @@ public class PickController {
 
     @RequestMapping(value = "/loadCasinos", method = RequestMethod.GET)
     @ResponseBody
-    public List<Casino> loadCasinos(){
+    public List<Casino> loadCasinos() {
         return pickService.listCasinos();
     }
 
     @RequestMapping(value = "/loadSports", method = RequestMethod.GET)
     @ResponseBody
-    public List<Sport> loadSports(){
+    public List<Sport> loadSports() {
         return pickService.listSports();
     }
 
     @RequestMapping(value = "/loadCountries", method = RequestMethod.GET)
     @ResponseBody
-    public List<Country> loadCountries(){
+    public List<Country> loadCountries() {
         return pickService.listCountries();
     }
 
     @RequestMapping(value = "/loadDetallePicks", method = RequestMethod.GET)
     @ResponseBody
-    public List<DetallePick> loadDetallePicks(int deporte){
+    public List<DetallePick> loadDetallePicks(int deporte) {
         return pickService.listDetallePicks(deporte);
     }
 
@@ -69,10 +70,24 @@ public class PickController {
         }
         return response;
     }
-    
+
     @RequestMapping(value = "/loadPicks", method = RequestMethod.GET)
     @ResponseBody
-    public List<Pick> loadPicks(){
+    public List<Pick> loadPicks() {
         return pickService.listPicks();
+    }
+
+    @RequestMapping(value = "/guardarRentabilidad", method = RequestMethod.POST)
+    @ResponseBody
+    public GenericResponse guardarRentabilidad(@RequestBody String rentabilidadMensual) {
+        try {
+            RentabilidadMensual rentabilidad = objectMapper.readValue(rentabilidadMensual, RentabilidadMensual.class);
+            pickService.guardarRentabilidad(rentabilidad);
+            response.Estado = true;
+        } catch (Exception e) {
+            response.Estado = false;
+            response.Mensaje = e.getMessage();
+        }
+        return response;
     }
 }

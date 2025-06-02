@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class PickService implements IPickService {
-  
+
     @Autowired
     private PickRepository pickRepository;
     @Autowired
@@ -21,6 +21,8 @@ public class PickService implements IPickService {
     private CountryRepository countryRepository;
     @Autowired
     private DetallePickRepository detallePickRepository;
+    @Autowired
+    private RentabilidadMensualRepository rentabilidadMensualRepository;
 
     @Override
     public List<Casino> listCasinos() {
@@ -40,22 +42,35 @@ public class PickService implements IPickService {
     @Override
     public List<DetallePick> listDetallePicks(int deporte) {
         return detallePickRepository.findAll()
-            .stream()
-            .filter(detallePick -> detallePick.getIdDeporte() == deporte)
-            .toList();
+                .stream()
+                .filter(detallePick -> detallePick.getIdDeporte() == deporte)
+                .toList();
     }
-
 
     @Override
     public List<Pick> listPicks() {
         return pickRepository.findAll()
-            .stream()
-            .sorted(Comparator.comparing(Pick::getId).reversed()) // Orden descendente por ID
-            .toList();
+                .stream()
+                .sorted(Comparator.comparing(Pick::getId).reversed()) // Orden descendente por ID
+                .toList();
     }
 
     @Override
     public void registrarPick(Pick pick) {
         pickRepository.save(pick);
+    }
+
+    @Override
+    public void guardarRentabilidad(RentabilidadMensual rentabilidadMensual) {
+        RentabilidadMensual existing = rentabilidadMensualRepository.findAll()
+                .stream()
+                .filter(r -> r.getAnio().equals(rentabilidadMensual.getAnio()) &&
+                        r.getMes().equals(rentabilidadMensual.getMes()) &&
+                        r.getUsuario().getId().equals(rentabilidadMensual.getUsuario().getId()))
+                .findFirst()
+                .orElse(new RentabilidadMensual());
+        rentabilidadMensual.setId(existing.getId());
+        rentabilidadMensual.setSaldoMes(existing.getSaldoMes());
+        rentabilidadMensualRepository.save(rentabilidadMensual);
     }
 }
