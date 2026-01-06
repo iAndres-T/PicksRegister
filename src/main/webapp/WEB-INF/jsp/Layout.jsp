@@ -44,14 +44,14 @@
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Home">
                     <i class="fas fa-fw fa-signal"></i>
                     <span>Picks</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Graphs">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>Grafícas</span>
                 </a>
@@ -134,15 +134,6 @@
 
             </div>
             <!-- End of Main Content -->
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; PICKS 2025</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->

@@ -10,6 +10,7 @@
                 <button class="btn btn-warning" id="btnNuevoPickNBA"><i class="fas fa-plus-circle"></i> NBA</button>
                 <button class="btn btn-primary" id="btnNuevoPickMLB"><i class="fas fa-plus-circle"></i> MLB</button>
                 <button class="btn btn-success" id="btnNuevoPickFutbol"><i class="fas fa-plus-circle"></i> Futbol</button>
+                <button class="btn btn-danger" id="btnNuevoPickNFL"><i class="fas fa-plus-circle"></i> NFL</button>
                 
                 <label class="pl-2" for="cboTipoFiltro">Filtrar por:</label>
                 <select class="form-control col-sm-2" name="tipoFiltro" id="cboTipoFiltro" style="display: inline;">

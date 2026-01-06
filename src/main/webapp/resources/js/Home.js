@@ -73,12 +73,13 @@ async function getGrid() {
         rowData: picks,
         columnDefs: [
             {
-                headerName: 'Editar',
+                headerName: 'Acciones',
                 field: 'edit',
                 pinned: 'left',
                 cellStyle: { 'text-align': 'center' },
                 cellRenderer: params => {
-                    return `<button type="button" class="btn btn-outline-info editar-pick"><i class="fa fa-edit"></i></button>`;
+                    return `<button type="button" class="btn btn-outline-info editar-pick"><i class="fa fa-edit"></i></button>
+                            <button type="button" class="btn btn-outline-secondary duplicar-pick"><i class="fa fa-clone"></i></button>`;
                 }
             },
             {
@@ -274,9 +275,16 @@ $("#btnNuevoPickFutbol").click(function () {
     $("#txtJugador").val("No Aplica");
 });
 
+$("#btnNuevoPickNFL").click(function () {
+    mostrarModal();
+    loadLinea("NFL");
+    $("#cboSport").val(4);
+    loadDescripcion(4);
+});
+
 function loadLinea(tipo) {
     $("#cboLinea").empty();
-    if (tipo === "NBA" || tipo === "MLB") {
+    if (tipo === "NBA" || tipo === "MLB" || tipo === "NFL") {
         $("#cboLinea").append($("<option>").val("Over").text("Over"));
         $("#cboLinea").append($("<option>").val("Under").text("Under"));
     }
@@ -375,7 +383,7 @@ $("#btnGuardarPick").click(function () {
                 actualizarSaldo();
                 getCuotaPromedio();
                 getGananciaAndRentabilidad();
-                
+
                 let ganancia = 0;
                 let rentabilidad = 0;
                 grid.forEachNode((node) => {
@@ -441,11 +449,43 @@ $('#gridPicks').on('click', '.editar-pick', async function () {
         loadLinea("MLB");
         await loadDescripcion(2);
     }
-    else {
+    else if (rowNode.data.sport.id === 3) {
         loadLinea("Futbol");
         await loadDescripcion(3);
     }
+    else {
+        loadLinea("NFL");
+        await loadDescripcion(4);
+    }
     mostrarModal(rowNode.data);
+});
+
+$('#gridPicks').on('click', '.duplicar-pick', async function () {
+    const rowNode = grid.getRowNode($(this).closest('div.ag-row').attr('row-id'));
+    const data = structuredClone(rowNode.data);
+    data.id = null;
+    data.jugador = "";
+    data.resultado = "Pendiente";
+    data.cuota = "";
+
+    if (data.sport.id === 1) {
+        loadLinea("NBA");
+        await loadDescripcion(1);
+    }
+    else if (data.sport.id === 2) {
+        loadLinea("MLB");
+        await loadDescripcion(2);
+    }
+    else if (data.sport.id === 3) {
+        loadLinea("Futbol");
+        await loadDescripcion(3);
+    }
+    else {
+        loadLinea("NFL");
+        await loadDescripcion(4);
+    }
+
+    mostrarModal(data);
 });
 
 $('#cboTipoFiltro').change(function () {
@@ -567,5 +607,3 @@ function getGananciaAndRentabilidad(filter = false) {
         $("#txtRentabilidad").removeClass('text-bg-danger').addClass('text-bg-success');
     }
 }
-
-

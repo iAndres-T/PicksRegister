@@ -46,7 +46,7 @@ public class LoginController {
     try {
       Usuario usuario = objectMapper.readValue(usuarioModel, Usuario.class);
       return usuarioService.addUsuario(usuario);
-    } catch (Exception e) {
+    } catch (Exception e) { 
       return "Error: " + e.getMessage();
     }
   }
