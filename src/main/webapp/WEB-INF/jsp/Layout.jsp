@@ -45,14 +45,14 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/Home">
-                    <i class="fas fa-fw fa-signal"></i>
+                    <i class="fas fa-fw fa-list"></i>
                     <span>Picks</span>
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/Graphs">
-                    <i class="fas fa-fw fa-calendar"></i>
+                    <i class="fas fa-fw fa-line-chart"></i>
                     <span>Grafícas</span>
                 </a>
             </li>

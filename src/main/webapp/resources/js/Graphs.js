@@ -12,13 +12,33 @@ $(document).ready(function () {
                         <select id="selSport" class="form-control"><option value="">Todos los deportes</option></select>
                     </div>
                     <div class="col-md-3">
-                        <input id="txtMes" class="form-control" placeholder="Mes (ej: Enero)" />
+                        <select id="selMes" class="form-control">
+                          <option value="">Todos los meses</option>
+                          <option value="Enero">Enero</option>
+                          <option value="Febrero">Febrero</option>
+                          <option value="Marzo">Marzo</option>
+                          <option value="Abril">Abril</option>
+                          <option value="Mayo">Mayo</option>
+                          <option value="Junio">Junio</option>
+                          <option value="Julio">Julio</option>
+                          <option value="Agosto">Agosto</option>
+                          <option value="Septiembre">Septiembre</option>
+                          <option value="Octubre">Octubre</option>
+                          <option value="Noviembre">Noviembre</option>
+                          <option value="Diciembre">Diciembre</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <button id="btnLoad" class="btn btn-primary w-100">Cargar</button>
                     </div>
                 </div>
-                <div style="position: relative; height: 75vh; width: 100%">
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <span class="badge pr-1" id="graphGanancia"></span>
+                    <span class="badge pr-1" id="graphRentabilidad"></span>
+                  </div>
+                </div>
+                <div style="position: relative; height: 70vh; width: 100%">
                     <canvas id="chartLine"></canvas>
                 </div>
             </div>
@@ -66,7 +86,7 @@ $(document).ready(function () {
   $('#btnLoad').click(function () {
     const casinoId = $('#selCasino').val();
     const sportId = $('#selSport').val();
-    const mes = $('#txtMes').val();
+    const mes = $('#selMes').val();
     const base = window.basePath || '';
     let url = base + '/api/graphs/cumulative?';
     if (casinoId) url += `casinoId=${casinoId}&`;
@@ -77,6 +97,7 @@ $(document).ready(function () {
       const labels = Object.keys(resp);
       const data = Object.values(resp).map(v => parseFloat(v.toFixed ? v : v));
       renderChart(labels, data);
+      mostrarDatosRentabilidadGraph(data[data.length - 1]);
     }).fail(function () {
       toastr.error('Error al cargar datos');
     });
@@ -85,3 +106,22 @@ $(document).ready(function () {
   // Cargar inicial
   $('#btnLoad').trigger('click');
 });
+
+function mostrarDatosRentabilidadGraph(dato) {
+
+  $("#graphGanancia").text('Ganancia: ' + dato.toFixed(0));
+  if (dato < 0) {
+    $("#graphGanancia").removeClass('text-bg-success').addClass('text-bg-danger');
+  } else {
+    $("#graphGanancia").removeClass('text-bg-danger').addClass('text-bg-success');
+  }
+
+  const saldoInicial = parseFloat($("#txtSaldoInicial").text().replace(/[^0-9.-]+/g, ""));
+  const rentabilidad = saldoInicial ? (dato / saldoInicial * 100).toFixed(2) : 0;
+  $("#graphRentabilidad").text('Rentabilidad: ' + rentabilidad + '%');
+  if (rentabilidad < 0) {
+    $("#graphRentabilidad").removeClass('text-bg-success').addClass('text-bg-danger');
+  } else {
+    $("#graphRentabilidad").removeClass('text-bg-danger').addClass('text-bg-success');
+  }
+}

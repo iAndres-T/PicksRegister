@@ -3,6 +3,7 @@ package gm.picks.Controllers;
 import gm.picks.Service.GraphService;
 import gm.picks.Repository.CasinoRepository;
 import gm.picks.Repository.SportRepository;
+import gm.picks.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,12 +26,16 @@ public class GraphController {
     @Autowired
     SportRepository sportRepository;
 
+    @Autowired
+    UsuarioService usuarioService;
+
     @RequestMapping(value = "/Graphs", method = RequestMethod.GET)
     public String graphs(ModelMap model) {
         model.put("Content", "Graphs.jsp");
         model.put("Script", "Graphs.js");
         model.put("Casinos", casinoRepository.findAll());
         model.put("Sports", sportRepository.findAll());
+        model.put("Usuario", usuarioService.findUsuarioById(1));
         return "Layout";
     }
 
