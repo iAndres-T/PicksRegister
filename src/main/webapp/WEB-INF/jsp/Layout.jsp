@@ -56,6 +56,13 @@
                     <span>Grafícas</span>
                 </a>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/InfoPicks">
+                    <i class="fas fa-fw fa-info-circle"></i>
+                    <span>Info Picks</span>
+                </a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
