@@ -19,4 +19,6 @@ public interface IUsuarioService {
     public Object[] getRendimientos(int userId, Integer sportId, String mes);
 
     public String addUsuario(Usuario usuario);
+
+    public Double getSaldoInicialMes(Usuario usuario, String mes, String anio);
 }

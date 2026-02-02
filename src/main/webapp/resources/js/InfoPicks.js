@@ -87,8 +87,8 @@ function initGrid() {
         }
       },
       {
-        headerName: '% ROI',
-        field: 'roi',
+        headerName: '% Profit',
+        field: 'profit',
         valueFormatter: params => params.value ? `${params.value.toFixed(2)}%` : '0.00%',
         cellStyle: params => {
           if (params.value > 0) return { color: 'green', fontWeight: 'bold' };

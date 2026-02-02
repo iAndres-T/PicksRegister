@@ -137,4 +137,15 @@ public class UsuarioService implements IUsuarioService {
             return e.getMessage();
         }
     }
+
+    @Override
+    public Double getSaldoInicialMes(Usuario usuario, String mes, String anio) {
+        return rentabilidadMensualRepository.findAll().stream()
+                .filter(r -> r.getUsuario().getId().equals(usuario.getId())
+                        && r.getMes().equalsIgnoreCase(mes)
+                        && r.getAnio().equals(anio))
+                .findFirst()
+                .map(RentabilidadMensual::getSaldoMes)
+                .orElse(usuario.getSaldoInicialHistory());
+    }
 }

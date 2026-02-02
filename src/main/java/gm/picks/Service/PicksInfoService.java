@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import gm.picks.Models.Pick;
+import gm.picks.Models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class PicksInfoService implements IPicksInfoService {
 
   @Autowired
   private PickRepository pickRepository;
+
+  @Autowired
+  private IUsuarioService usuarioService;
 
   @Override
   public Map<String, Object> getPicksInfo(Integer sportId, String mes, String year) {
@@ -95,7 +99,13 @@ public class PicksInfoService implements IPicksInfoService {
       double wagered = dailyPicks.stream().mapToDouble(p -> p.getValor() != null ? p.getValor() : 0.0).sum();
       double profit = dailyPicks.stream().mapToDouble(p -> p.getUtilidadPick() != null ? p.getUtilidadPick() : 0.0)
           .sum();
-      double roi = wagered != 0 ? (profit / wagered) * 100 : 0.0;
+
+      Usuario usuario = dailyPicks.get(0).getUsuario();
+      String pickMes = dailyPicks.get(0).getMes();
+      String pickYear = dailyPicks.get(0).getYear();
+
+      Double saldoInicialMes = usuarioService.getSaldoInicialMes(usuario, pickMes, pickYear);
+      double profit = (saldoInicialMes != null && saldoInicialMes != 0) ? (profit / saldoInicialMes) * 100 : 0.0;
 
       Map<String, Object> row = new HashMap<>();
       row.put("fecha", date);
@@ -105,7 +115,7 @@ public class PicksInfoService implements IPicksInfoService {
       row.put("totalVoid", voided);
       row.put("totalWagered", Math.round(wagered * 100.0) / 100.0);
       row.put("totalProfit", Math.round(profit * 100.0) / 100.0);
-      row.put("roi", Math.round(roi * 100.0) / 100.0);
+      row.put("profit", Math.round(profit * 100.0) / 100.0);
 
       gridData.add(row);
     }
